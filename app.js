@@ -3,7 +3,13 @@ const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const dotenv=require('dotenv')
 
+
+dotenv.config({
+
+   path:'./config/config.env'
+    })
 const { MONGODB } = require('./config');
 const userRoutes = require('./routes/user');
 const noteRoutes = require('./routes/note');
@@ -26,10 +32,11 @@ app.use((err, req, res, next) => {
     res.status(status).json({ error: { message: err.message } });
 });
 
+const PORT = process.env.PORT || 3300
 mongoose.connect(MONGODB, { useNewUrlParser: true })
     .then(() => {
         console.log('connected to mongodb');
-        return app.listen(3300);
+        return app.listen(PORT);
     })
     .then(() => console.log('server running at 3300'))
     .catch(err => console.log(err.message));
